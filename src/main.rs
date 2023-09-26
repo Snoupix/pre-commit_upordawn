@@ -6,6 +6,7 @@ use git2::{Repository, StatusOptions, StatusShow};
 fn main() {
     run_fix("front");
     run_fix("back");
+    run_fix("mobile");
 
     let repo = Repository::discover(Path::new(".")).expect("Cannot find git repo");
     let mut status_options = StatusOptions::new();
@@ -14,7 +15,7 @@ fn main() {
 
     if !statuses.is_empty() {
         eprintln!(
-            "There are {} modified files not added to commit, commit aborted. (to deny this check, use --no-verify)",
+            "There are {} modified files by the prettier not added to the commit; commit aborted. (to deny this check, use --no-verify)",
             statuses.iter().count()
         );
         std::process::exit(1);

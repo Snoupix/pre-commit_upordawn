@@ -49,7 +49,7 @@ jobs:
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.target }}
-          mv target/${{ matrix.target }}/release/pre_commit release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.BIN_EXT }}))
+          mv target/${{ matrix.target }}/release/pre_commit* release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.BIN_EXT }}))
 
       - name: Release
         uses: softprops/action-gh-release@v1

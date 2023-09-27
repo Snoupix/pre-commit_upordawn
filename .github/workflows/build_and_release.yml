@@ -17,7 +17,7 @@ jobs:
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openssl libssl-dev pkg-config libz-sys
+          sudo apt-get install -y openssl libssl-dev pkg-config
 
       - name: Set PKG_CONFIG_PATH for openssl
         run: |

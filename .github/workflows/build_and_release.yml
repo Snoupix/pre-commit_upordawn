@@ -25,19 +25,28 @@ jobs:
         with:
           use-cross: true
           command: build
-          args: --release --target=${{ matrix.target }}
+          args: --release
+          # args: --release --target=${{ matrix.target }}
+      
+      - name: Set binary extension
+        id: binary_extension
+        run: |
+          if [[ "${{ matrix.target }}" == "x86_64-pc-windows-gnu" ]]; then
+            echo "::set-output name=binary_extension::.exe"
+          else
+            echo "::set-output name=binary_extension::"
+          fi
 
       - name: Create target dir & Move binary
         run: |
-          mkdir ~/{{ matrix.target }}
-          mv target/${{ matrix.target }}/release/pre-commit* ~/{{ matrix.target }}/
+          mkdir -p release_assets/${{ matrix.target }}
+          mv target/${{ matrix.target }}/release/pre_commit release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.binary_extension }}))
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.token }}
-          files: |
-            ~/${{ matrix.target }}
+          files: release_assets/${{ matrix.target }}/*
           body: |
             Release for ${{ matrix.target }}
           draft: false

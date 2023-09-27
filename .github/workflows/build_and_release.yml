@@ -32,7 +32,7 @@ jobs:
 
       - uses: actions-rs/cargo@v1
         with:
-          use-cross: true
+          # use-cross: true
           command: build
           args: --release
           # args: --release --target=${{ matrix.target }}
@@ -41,15 +41,15 @@ jobs:
         id: binary_extension
         run: |
           if [[ "${{ matrix.target }}" == "x86_64-pc-windows-gnu" ]]; then
-            echo "::set-output name=binary_extension::.exe"
+            echo "BIN_EXT=.exe" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=binary_extension::"
+            echo "BIN_EXT=" >> $GITHUB_OUTPUT
           fi
 
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.target }}
-          mv target/${{ matrix.target }}/release/pre_commit release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.binary_extension }}))
+          mv target/${{ matrix.target }}/release/pre_commit release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.BIN_EXT }}))
 
       - name: Release
         uses: softprops/action-gh-release@v1

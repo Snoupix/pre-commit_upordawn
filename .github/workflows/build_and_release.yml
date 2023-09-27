@@ -36,20 +36,11 @@ jobs:
           command: build
           args: --release
           # args: --release --target=${{ matrix.target }}
-      
-      - name: Set binary extension
-        id: binary_extension
-        run: |
-          if [[ "${{ matrix.target }}" == "x86_64-pc-windows-gnu" ]]; then
-            echo "BIN_EXT=.exe" >> $GITHUB_OUTPUT
-          else
-            echo "BIN_EXT=" >> $GITHUB_OUTPUT
-          fi
 
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.target }}
-          mv target/release/pre_commit* release_assets/${{ matrix.target }}/pre-commit$($(echo ${{ steps.binary_extension.outputs.BIN_EXT }}))
+          mv target/release/pre_commit* release_assets/${{ matrix.target }}
 
       - name: Release
         uses: softprops/action-gh-release@v1

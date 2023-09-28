@@ -34,13 +34,13 @@ jobs:
         with:
           # use-cross: true
           command: build
-          args: --release
-          # args: --release --target=${{ matrix.target }}
+          # args: --release
+          args: --release --target=${{ matrix.target }}
 
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.target }}
-          mv target/release/pre-commit* release_assets/${{ matrix.target }}
+          mv target/release/pre-commit_upordawn release_assets/${{ matrix.target }}/pre-commit
 
       - name: Release
         uses: softprops/action-gh-release@v1

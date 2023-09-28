@@ -4,13 +4,19 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.platform.os }}
     strategy:
       matrix:
-        target:
-          - x86_64-unknown-linux-gnu
-          - x86_64-apple-darwin
-          - x86_64-pc-windows-gnu
+        platform:
+          - target: x86_64-unknown-linux-gnu
+            bin: pre-commit
+            os: ubuntu-latest
+          - target: x86_64-apple-darwin
+            bin: pre-commit
+            os: macOS-latest
+          - target: x86_64-pc-windows-gnu
+            bin: pre-commit.exe
+            os: windows-latest
 
     steps:
       - name: Install Dependencies
@@ -24,33 +30,39 @@ jobs:
           export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig"
           export PKG_CONFIG_ALLOW_CROSS=1
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: ${{ matrix.target }}
+          target: ${{ matrix.platform.target }}
           override: true
 
-      - uses: actions-rs/cargo@v1
+      - name: Build
+        uses: houseabsolute/actions-rust-cross@v0
         with:
-          use-cross: true
           command: build
-          # args: --release
-          args: --release --target=${{ matrix.target }}
+          target: ${{ matrix.platform.target }}
+          args: "--release"
+      # - uses: actions-rs/cargo@v1
+      #   with:
+      #     use-cross: true
+      #     command: build
+      #     # args: --release
+      #     args: --release --target=${{ matrix.platform.target }}
 
       - name: Create target dir & Move binary
         run: |
-          mkdir -p release_assets/${{ matrix.target }}
+          mkdir -p release_assets/${{ matrix.platform.target }}
           ls -Al target/release
-          mv target/release/pre-commit_upordawn release_assets/${{ matrix.target }}/pre-commit
+          mv target/release/pre-commit_upordawn release_assets/${{ matrix.platform.target }}/{{ matrix.platform.bin }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.token }}
-          files: release_assets/${{ matrix.target }}/*
+          files: release_assets/${{ matrix.platform.target }}/*
           body: |
-            Release for ${{ matrix.target }}
-          tag_name: ${{ matrix.target }}
+            Release for ${{ matrix.platform.target }}
+          tag_name: ${{ matrix.platform.target }}
           draft: false
           prerelease: false

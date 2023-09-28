@@ -13,6 +13,11 @@ jobs:
           - x86_64-pc-windows-gnu
 
     steps:
+      - name: Set Swap Space
+        uses: pierotofy/set-swap-space@master
+        with:
+          swap-size-gb: 10
+
       - name: Install Dependencies
         run: |
           sudo apt-get update

@@ -53,6 +53,10 @@ jobs:
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.platform.os }}
+          ls -Al ./
+          ls -Al target
+          ls -Al target/release
+          ls -Al target/${{ matrix.platform.target }}
           mv target/${{ matrix.platform.target }}/pre-commit_upordawn release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
 
       - name: Release

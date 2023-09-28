@@ -49,5 +49,6 @@ jobs:
           files: release_assets/${{ matrix.target }}/*
           body: |
             Release for ${{ matrix.target }}
+          tag_name: ${{ matrix.target }}
           draft: false
           prerelease: false

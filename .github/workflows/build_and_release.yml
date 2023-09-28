@@ -13,11 +13,6 @@ jobs:
           - x86_64-pc-windows-gnu
 
     steps:
-      - name: Set Swap Space
-        uses: pierotofy/set-swap-space@master
-        with:
-          swap-size-gb: 10
-
       - name: Install Dependencies
         run: |
           sudo apt-get update
@@ -46,6 +41,7 @@ jobs:
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.target }}
+          ls -Al target/release
           mv target/release/pre-commit_upordawn release_assets/${{ matrix.target }}/pre-commit
 
       - name: Release

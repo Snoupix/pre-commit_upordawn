@@ -52,17 +52,17 @@ jobs:
 
       - name: Create target dir & Move binary
         run: |
-          mkdir -p release_assets/${{ matrix.platform.target }}
+          mkdir -p release_assets/${{ matrix.platform.os }}
           ls -Al target/release
-          mv target/release/pre-commit_upordawn release_assets/${{ matrix.platform.target }}/{{ matrix.platform.bin }}
+          mv target/release/pre-commit_upordawn release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.token }}
-          files: release_assets/${{ matrix.platform.target }}/*
+          files: release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
           body: |
-            Release for ${{ matrix.platform.target }}
+            Release for ${{ matrix.platform.os }} target ${{ matrix.platform.target }}
           tag_name: ${{ matrix.platform.target }}
           draft: false
           prerelease: false

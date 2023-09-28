@@ -55,6 +55,7 @@ jobs:
           mkdir -p release_assets/${{ matrix.platform.os }}
           ls target/release
           ls target/${{ matrix.platform.target }}
+          ls target/${{ matrix.platform.target }}/release
           mv target/${{ matrix.platform.target }}/release/pre-commit_upordawn release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
 
       - name: Release

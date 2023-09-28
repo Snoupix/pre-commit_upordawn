@@ -10,26 +10,18 @@ jobs:
         platform:
           - target: x86_64-unknown-linux-gnu
             bin: pre-commit
+            bin_name: pre-commit_upordawn
             os: ubuntu-latest
           - target: x86_64-apple-darwin
             bin: pre-commit
+            bin_name: pre-commit_upordawn
             os: macOS-latest
           - target: x86_64-pc-windows-gnu
             bin: pre-commit.exe
+            bin_name: pre-commit_upordawn.exe
             os: windows-latest
 
     steps:
-      # - name: Install Dependencies
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y openssl libssl-dev pkg-config mingw-w64
-
-      # - name: Set up environment
-      #   run: |
-      #     export PATH="/usr/share/mingw-w64:$PATH"
-      #     export PKG_CONFIG_PATH="/usr/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig"
-      #     export PKG_CONFIG_ALLOW_CROSS=1
-
       - uses: actions/checkout@v3
       - uses: actions-rs/toolchain@v1
         with:
@@ -43,20 +35,11 @@ jobs:
           command: build
           target: ${{ matrix.platform.target }}
           args: "--release"
-      # - uses: actions-rs/cargo@v1
-      #   with:
-      #     use-cross: true
-      #     command: build
-      #     # args: --release
-      #     args: --release --target=${{ matrix.platform.target }}
 
       - name: Create target dir & Move binary
         run: |
           mkdir -p release_assets/${{ matrix.platform.os }}
-          ls target/release
-          ls target/${{ matrix.platform.target }}
-          ls target/${{ matrix.platform.target }}/release
-          mv target/${{ matrix.platform.target }}/release/pre-commit_upordawn release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
+          mv target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin_name }} release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
 
       - name: Release
         uses: softprops/action-gh-release@v1

@@ -36,18 +36,28 @@ fn run_fix(folder: &str) {
         .current_dir(folder_path)
         .output()
         .or_else(|_| {
-            let user_cmd = Command::new("whoami").output();
+            let _which = Command::new("which").args(["npm"]).output();
+            let _where = Command::new("where").args(["npm"]).output();
 
-            let user = match user_cmd {
-                Ok(out) => out.stdout.iter().map(|&c| c as char).collect::<String>(),
-                Err(_) => std::env::var("HOME")
-                    .expect("Failed to execute whoami command and failed to get HOME env variable"),
+            let fallback_npm = match (_which, _where) {
+                (Ok(out), _) => String::from_utf8(out.stdout).unwrap(),
+                (_, Ok(out)) => String::from_utf8(out.stdout).unwrap(),
+                _ => {
+                    let user_cmd = Command::new("whoami").output();
+
+                    let user = match user_cmd {
+                        Ok(out) => out.stdout.iter().map(|&c| c as char).collect::<String>(),
+                        Err(_) => std::env::var("HOME").expect(
+                            "Failed to execute whoami command and failed to get HOME env variable",
+                        ),
+                    };
+
+                    format!(
+                        "C:\\Users\\{}\\AppData\\Roaming\\npm\\npm.cmd",
+                        user.split('\\').last().unwrap().trim()
+                    )
+                }
             };
-
-            let fallback_npm = format!(
-                "C:\\Users\\{}\\AppData\\Roaming\\npm\\npm.cmd",
-                user.split('\\').last().unwrap().trim()
-            );
 
             Command::new(fallback_npm)
                 .args(["run", "fix"])

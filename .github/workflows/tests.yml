@@ -30,7 +30,8 @@ jobs:
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"
           git add .
-          STATUS=git commit -m "Test commit" # "echo $?" should be equal to 0
+          git commit -m "Test commit" # "echo $?" should be equal to 0
+          STATUS=$?
           set -e
           if [ $STATUS -ne 0 && $STATUS -ne 2 ]; then exit 1; fi
 

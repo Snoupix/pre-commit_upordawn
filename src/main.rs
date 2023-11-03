@@ -18,7 +18,7 @@ fn main() {
             "There are {} modified files by the prettier not added to the commit; commit aborted. (to deny this hook/check, use --no-verify)",
             statuses.iter().count()
         );
-        std::process::exit(1);
+        std::process::exit(2);
     }
 }
 

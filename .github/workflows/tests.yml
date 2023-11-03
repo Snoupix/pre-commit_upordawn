@@ -30,6 +30,7 @@ jobs:
 
       - name: Test hook
         run: |
+          git config --global user.name "Snoupix"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0
 
@@ -58,8 +59,8 @@ jobs:
         
       - name: Install hook
         run: |
-          chmod +x ../install_unix.sh
-          ../install_unix.sh
+          chmod +x ./install_unix.sh
+          ./install_unix.sh
 
       # - name: Test install script
       #   run: |
@@ -73,5 +74,6 @@ jobs:
 
       - name: Test hook
         run: |
+          git config --global user.name "Snoupix"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0

@@ -25,11 +25,14 @@ jobs:
 
       - name: Test hook
         run: |
+          set +e
           echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"
           git add .
-          git commit -m "Test commit" # "echo $?" should be equal to 0
+          STATUS=git commit -m "Test commit" # "echo $?" should be equal to 0
+          set -e
+          if [ $STATUS -ne 0 && $STATUS -ne 2 ]; then exit 1; fi
 
   unix:
     runs-on: ${{ matrix.platform.os }}

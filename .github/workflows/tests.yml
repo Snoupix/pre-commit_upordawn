@@ -1,4 +1,4 @@
-name: Build and Release for Windows, Linux and MacOS
+name: Testing pre-commit on every platform
 
 on: [push]
 
@@ -23,31 +23,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Clone UpOrDawn repo
+        run: |
+          git clone https://github.com/Snoupix/UpOrDawn
+        
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: ${{ matrix.platform.target }}
           override: true
 
-      - name: Build
+      - name: Build hook
         uses: houseabsolute/actions-rust-cross@v0
         with:
           command: build
           target: ${{ matrix.platform.target }}
           args: "--release"
 
-      - name: Create target dir & Move binary
-        run: |
-          mkdir -p release_assets/${{ matrix.platform.os }}
-          mv target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin_name }} release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
-
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          token: ${{ secrets.token }}
-          files: release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
-          body: |
-            Release for ${{ matrix.platform.os }} target ${{ matrix.platform.target }}
-          tag_name: ${{ matrix.platform.target }}
-          draft: false
-          prerelease: false
+      # - name: 
+      #   run: |
+      #     mkdir -p release_assets/${{ matrix.platform.os }}
+      #     mv target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin_name }} release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}

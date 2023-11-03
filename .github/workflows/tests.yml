@@ -6,33 +6,58 @@ on:
       - '*test'
 
 jobs:
-  build:
+  windows:
+    runs-on: windows-latest
+
+    steps:
+      - name: Cloning UpOrDawn repo
+        uses: actions/checkout@v4
+        with:
+          repository: Snoupix/UpOrDawn
+          ref: master
+          token: ${{ secrets.TOKEN }}
+
+      - name: Cloning install scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            install_windows.bat
+          sparse-checkout-cone-mode: false
+        
+      - name: Install hook
+        run: |
+          .\install_windows.bat
+
+      - name: Test hook
+        run: |
+          git add .
+          git commit -m "Test commit" # "echo $?" should be equal to 0
+
+  unix:
     runs-on: ${{ matrix.platform.os }}
     strategy:
       matrix:
         platform:
           - os: ubuntu-latest
           - os: macOS-latest
-          - os: windows-latest
 
     steps:
-      - name: Clone UpOrDawn repo
+      - name: Cloning UpOrDawn repo
         uses: actions/checkout@v4
         with:
           repository: Snoupix/UpOrDawn
           ref: master
           token: ${{ secrets.TOKEN }}
-        
-      - if: matrix.platform.os == 'windows-latest'
-        name: Install hook
-        run: |
-          cd UpOrDawn
-          ../install_windows.bat
 
-      - if: matrix.platform.os != 'windows-latest'
-        name: Install hook
+      - name: Cloning install scripts
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            install_unix.sh
+          sparse-checkout-cone-mode: false
+        
+      - name: Install hook
         run: |
-          cd UpOrDawn
           chmod +x ../install_unix.sh
           ../install_unix.sh
 
@@ -48,6 +73,5 @@ jobs:
 
       - name: Test hook
         run: |
-          cd UpOrDawn
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0

@@ -17,17 +17,10 @@ jobs:
           ref: master
           token: ${{ secrets.TOKEN }}
 
-      - name: Cloning install script
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            install_windows.bat
-          sparse-checkout-cone-mode: false
-          path: script
-        
       - name: Install hook
         run: |
-          .\script\install_windows.bat
+          curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
+          .\install_windows.bat
 
       - name: Test hook
         run: |
@@ -52,29 +45,10 @@ jobs:
           repository: Snoupix/UpOrDawn
           ref: master
           token: ${{ secrets.TOKEN }}
-
-      - name: Cloning install script
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            install_unix.sh
-          sparse-checkout-cone-mode: false
-          path: script
         
       - name: Install hook
         run: |
-          chmod +x ./script/install_unix.sh
-          ./script/install_unix.sh
-
-      # - name: Test install script
-      #   run: |
-      #     cd UpOrDawn
-      #     if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
-      #       ../install_windows.bat
-      #     else
-      #       chmod +x ../install_unix.sh
-      #       ../install_unix.sh
-      #     fi
+          sh -c "$(curl -Ls https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_unix.sh)"
 
       - name: Test hook
         run: |

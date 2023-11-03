@@ -30,6 +30,7 @@ jobs:
 
       - name: Test hook
         run: |
+          echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0
@@ -74,6 +75,7 @@ jobs:
 
       - name: Test hook
         run: |
+          echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0

@@ -30,12 +30,12 @@ jobs:
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"
           git add .
-          git commit -m "Test commit" # "echo $?" should be equal to 0
+          git commit -m "Test commit"
           set STATUS=%ERRORLEVEL%
           set -e
-          if not !STATUS!==0 if not !STATUS!==2 (
-            exit /b 1
-          )
+          if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 2) {
+              exit 1
+          }
 
   unix:
     runs-on: ${{ matrix.platform.os }}
@@ -64,7 +64,7 @@ jobs:
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"
           git add .
-          git commit -m "Test commit" # "echo $?" should be equal to 0
+          git commit -m "Test commit"
           STATUS=$?
           set -e
           if [[ $STATUS -ne 0 && $STATUS -ne 2 ]]; then exit 1; fi

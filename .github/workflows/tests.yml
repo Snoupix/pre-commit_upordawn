@@ -19,6 +19,7 @@ jobs:
 
       - name: Install hook
         run: |
+          npm i -g prettier eslint
           curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
           .\install_windows.bat
 
@@ -48,6 +49,7 @@ jobs:
         
       - name: Install hook
         run: |
+          npm i -g prettier eslint
           sh -c "$(curl -Ls https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_unix.sh)"
 
       - name: Test hook

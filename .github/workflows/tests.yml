@@ -63,7 +63,7 @@ jobs:
         
       - name: Install hook
         run: |
-          chmod +x ./install_unix.sh
+          chmod +x ./script/install_unix.sh
           ./script/install_unix.sh
 
       # - name: Test install script

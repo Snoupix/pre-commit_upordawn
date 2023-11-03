@@ -17,21 +17,23 @@ jobs:
           ref: master
           token: ${{ secrets.TOKEN }}
 
-      - name: Cloning install scripts
+      - name: Cloning install script
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
             install_windows.bat
           sparse-checkout-cone-mode: false
+          path: script
         
       - name: Install hook
         run: |
-          .\install_windows.bat
+          .\script\install_windows.bat
 
       - name: Test hook
         run: |
           echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
+          git config --global user.email "test@test.com"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0
 
@@ -51,17 +53,18 @@ jobs:
           ref: master
           token: ${{ secrets.TOKEN }}
 
-      - name: Cloning install scripts
+      - name: Cloning install script
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
             install_unix.sh
           sparse-checkout-cone-mode: false
+          path: script
         
       - name: Install hook
         run: |
           chmod +x ./install_unix.sh
-          ./install_unix.sh
+          ./script/install_unix.sh
 
       # - name: Test install script
       #   run: |
@@ -77,5 +80,6 @@ jobs:
         run: |
           echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
+          git config --global user.email "test@test.com"
           git add .
           git commit -m "Test commit" # "echo $?" should be equal to 0

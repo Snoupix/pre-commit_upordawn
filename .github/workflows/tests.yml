@@ -8,22 +8,12 @@ jobs:
     strategy:
       matrix:
         platform:
-          - target: x86_64-unknown-linux-gnu
-            bin: pre-commit
-            bin_name: pre-commit_upordawn
-            os: ubuntu-latest
-          - target: x86_64-apple-darwin
-            bin: pre-commit
-            bin_name: pre-commit_upordawn
-            os: macOS-latest
-          - target: x86_64-pc-windows-gnu
-            bin: pre-commit.exe
-            bin_name: pre-commit_upordawn.exe
-            os: windows-latest
+          - os: ubuntu-latest
+          - os: macOS-latest
+          - os: windows-latest
 
     steps:
       - uses: actions/checkout@v4
-
       - name: Clone UpOrDawn repo
         run: |
           git clone https://github.com/Snoupix/UpOrDawn
@@ -41,7 +31,31 @@ jobs:
           target: ${{ matrix.platform.target }}
           args: "--release"
 
-      # - name: 
+      - if: matrix.platform.os == 'windows-latest'
+        name: Install hook
+        run: |
+          cd UpOrDawn
+          ../install_windows.bat
+
+      - if: matrix.platform.os != 'windows-latest'
+        name: Install hook
+        run: |
+          cd UpOrDawn
+          chmod +x ../install_unix.sh
+          ../install_unix.sh
+
+      # - name: Test install script
       #   run: |
-      #     mkdir -p release_assets/${{ matrix.platform.os }}
-      #     mv target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin_name }} release_assets/${{ matrix.platform.os }}/${{ matrix.platform.bin }}
+      #     cd UpOrDawn
+      #     if [ "${{ matrix.platform.os }}" == "windows-latest" ]; then
+      #       ../install_windows.bat
+      #     else
+      #       chmod +x ../install_unix.sh
+      #       ../install_unix.sh
+      #     fi
+
+      - name: Test hook
+        run: |
+          cd UpOrDawn
+          git add .
+          git commit -m "Test commit" # "echo $?" should be equal to 0

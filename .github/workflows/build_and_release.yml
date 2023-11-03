@@ -1,6 +1,9 @@
 name: Build and Release for Windows, Linux and MacOS
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:

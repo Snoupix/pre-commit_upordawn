@@ -1,6 +1,9 @@
 name: Testing pre-commit on every platform
 
-on: [push]
+on:
+  push:
+    branches:
+      - '*test'
 
 jobs:
   build:
@@ -13,24 +16,13 @@ jobs:
           - os: windows-latest
 
     steps:
-      - uses: actions/checkout@v4
       - name: Clone UpOrDawn repo
-        run: |
-          git clone https://github.com/Snoupix/UpOrDawn
+        uses: actions/checkout@v4
+        with:
+          repository: Snoupix/UpOrDawn
+          ref: master
+          token: ${{ secrets.TOKEN }}
         
-      - uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          target: ${{ matrix.platform.target }}
-          override: true
-
-      - name: Build hook
-        uses: houseabsolute/actions-rust-cross@v0
-        with:
-          command: build
-          target: ${{ matrix.platform.target }}
-          args: "--release"
-
       - if: matrix.platform.os == 'windows-latest'
         name: Install hook
         run: |

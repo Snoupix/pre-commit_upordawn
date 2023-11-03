@@ -25,14 +25,14 @@ jobs:
 
       - name: Test hook
         run: |
-          set +e
+          $ErrorActionPreference = "Continue"
           echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"
           git add .
           git commit -m "Test commit"
           set STATUS=%ERRORLEVEL%
-          set -e
+          $ErrorActionPreference = "Stop"
           if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 2) {
               exit 1
           }
@@ -66,5 +66,6 @@ jobs:
           git add .
           git commit -m "Test commit"
           STATUS=$?
+          echo $STATUS
           set -e
           if [[ $STATUS -ne 0 && $STATUS -ne 2 ]]; then exit 1; fi

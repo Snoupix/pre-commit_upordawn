@@ -31,7 +31,6 @@ jobs:
           $ErrorActionPreference = "Continue"
           .\.git\hooks\pre-commit.exe
           $STATUS = $LASTEXITCODE
-          Write-Host "Status: $STATUS"
           $ErrorActionPreference = "Stop"
           if ($STATUS -ne 0 -and $STATUS -ne 2) {
               exit 1

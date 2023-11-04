@@ -29,7 +29,7 @@ jobs:
       - name: Test hook
         run: |
           $ErrorActionPreference = "Continue"
-          .\git\hooks\pre-commit.exe
+          .\.git\hooks\pre-commit.exe
           $STATUS = $LASTEXITCODE
           Write-Host "Status: $STATUS"
           $ErrorActionPreference = "Stop"

@@ -22,14 +22,14 @@ jobs:
           npm i -g prettier eslint
           curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
           .\install_windows.bat
-          icacls .git/hooks/pre-commit.exe /grant Users:RX
-          icacls .git/hooks/pre-commit.exe /grant Administrators:RX
           Remove-Item -Path "install_windows.bat"
   
       - name: Test hook
         run: |
           $ErrorActionPreference = "Continue"
-          .\.git\hooks\pre-commit.exe
+          icacls .git/hooks/pre-commit.exe /grant Users:RX
+          icacls .git/hooks/pre-commit.exe /grant Administrators:RX
+          .git\hooks\pre-commit.exe
           $STATUS = $LASTEXITCODE
           $ErrorActionPreference = "Stop"
           if ($STATUS -ne 0 -and $STATUS -ne 2) {

@@ -22,7 +22,8 @@ jobs:
           npm i -g prettier eslint
           curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
           .\install_windows.bat
-          icacls .git/hooks/pre-commit.exe /grant %username%:RX
+          icacls .git/hooks/pre-commit.exe /grant Users:RX
+          icacls .git/hooks/pre-commit.exe /grant Administrators:RX
           Remove-Item -Path "install_windows.bat"
 
       - name: Test hook

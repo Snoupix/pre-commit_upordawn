@@ -64,6 +64,7 @@ jobs:
 
       - name: Test hook
         run: |
+          set +e
           echo "Test" > test_file.txt
           git config --global user.name "Snoupix"
           git config --global user.email "test@test.com"

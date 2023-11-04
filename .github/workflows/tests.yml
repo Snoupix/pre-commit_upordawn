@@ -29,7 +29,7 @@ jobs:
           $ErrorActionPreference = "Continue"
           icacls .git/hooks/pre-commit.exe /grant Users:RX
           icacls .git/hooks/pre-commit.exe /grant Administrators:RX
-          .git/hooks/pre-commit.exe
+          Start-Process -FilePath ".git/hooks/pre-commit.exe" -NoNewWindow -Wait
           $STATUS = $LASTEXITCODE
           $ErrorActionPreference = "Stop"
           if ($STATUS -ne 0 -and $STATUS -ne 2) {

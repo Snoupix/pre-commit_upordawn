@@ -42,8 +42,8 @@ jobs:
     strategy:
       matrix:
         platform:
-          # - os: ubuntu-latest
-          - os: macOS-latest
+          - os: ubuntu-latest
+          # - os: macOS-latest
 
     steps:
       - name: Cloning UpOrDawn repo
@@ -61,7 +61,7 @@ jobs:
       - name: Test hook
         run: |
           set +e
-          ls -Al
+          ls -Al .git/hooks
           chmod +x .git/hooks/pre-commit
           ./git/hooks/pre-commit
           STATUS=$?

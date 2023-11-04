@@ -33,7 +33,7 @@ jobs:
           git commit -m "Test commit"
           set STATUS=%ERRORLEVEL%
           $ErrorActionPreference = "Stop"
-          if ($LASTEXITCODE -ne 0 -and $LASTEXITCODE -ne 2) {
+          if ($STATUS -ne 0 -and $STATUS -ne 2) {
               exit 1
           }
 

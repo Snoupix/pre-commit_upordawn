@@ -22,6 +22,8 @@ jobs:
           npm i -g prettier eslint
           curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
           .\install_windows.bat
+          icacls .git/hooks/pre-commit.exe /grant %username%:RX
+          Remove-Item -Path "install_windows.bat"
 
       - name: Test hook
         run: |
@@ -31,7 +33,7 @@ jobs:
           git config --global user.email "test@test.com"
           git add .
           git commit -m "Test commit"
-          set STATUS=%ERRORLEVEL%
+          set STATUS=$LASTEXITCODE
           $ErrorActionPreference = "Stop"
           if ($STATUS -ne 0 -and $STATUS -ne 2) {
               exit 1

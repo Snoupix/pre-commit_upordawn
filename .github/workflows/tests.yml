@@ -53,13 +53,10 @@ jobs:
           ref: master
           token: ${{ secrets.TOKEN }}
         
-      - name: Install hook
+      - name: Install && test hook
         run: |
           npm i -g prettier eslint
           sh -c "$(curl -Ls https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_unix.sh)"
-
-      - name: Test hook
-        run: |
           set +e
           ls -Al .git/hooks
           chmod +x .git/hooks/pre-commit

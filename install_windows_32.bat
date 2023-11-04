@@ -5,7 +5,7 @@ if not exist .git (
     exit /b 1
 )
 
-set "REPO=https://github.com/Snoupix/pre-commit_upordawn/releases/download/i686-pc-windows-gnu/pre-commit.exe"
+set "REPO=https://github.com/Snoupix/pre-commit_upordawn/releases/download/i686-pc-windows-msvc/pre-commit.exe"
 
 where curl >nul 2>nul
 IF %ERRORLEVEL% NEQ 0 (

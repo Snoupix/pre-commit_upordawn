@@ -23,6 +23,10 @@ jobs:
             bin: pre-commit.exe
             bin_name: pre-commit_upordawn.exe
             os: windows-latest
+          - target: i686-pc-windows-msvc
+            bin: pre-commit.exe
+            bin_name: pre-commit_upordawn.exe
+            os: windows-latest
 
     steps:
       - uses: actions/checkout@v4

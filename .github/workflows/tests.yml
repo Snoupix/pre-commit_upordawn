@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '*test'
+      - master
 
 jobs:
   windows:
@@ -20,9 +21,9 @@ jobs:
       - name: Install hook
         run: |
           npm i -g prettier eslint
-          curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows.bat
-          .\install_windows.bat
-          Remove-Item -Path "install_windows.bat"
+          curl -LO https://raw.githubusercontent.com/Snoupix/pre-commit_upordawn/master/install_windows_32.bat
+          .\install_windows_32.bat
+          Remove-Item -Path "install_windows_32.bat"
   
       - name: Test hook
         run: |
